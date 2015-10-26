@@ -2,6 +2,7 @@ package com.ocado.bdd;
 
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.jetty.websocket.api.SuspendToken;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -35,10 +36,10 @@ public class OcadoTestScenarios {
 		   mainPage.click(By.linkText("Browse Shop"));
 	  }
 		 
-	  @When("^'Buy any XX for XX' promo is available And promotion conditions are met$")
-	  public void searchItem(){
+	  @When("^'Buy any (\\d+) for (\\d+)' promo is available And promotion conditions are met$")
+	  public void searchItem(int num1, int num2){
 		  MainPage mainPage = new MainPage(driver);
-		  mainPage.click(By.partialLinkText("Buy any 1 add 1 free"));
+		  mainPage.click(By.partialLinkText("Buy any "+num1+" add "+num2+" free"));
 		  
 
 	  }
@@ -46,10 +47,14 @@ public class OcadoTestScenarios {
 	  @Then("^total amount in basket is calculated correct$")
 	  public void checkSavingValue() throws Throwable{
 		  //To finish change to PageObject
+		  MainPage mainPage = new MainPage(driver);
 		  System.out.println(driver.findElement(By.xpath("//a[@class='button secondary']/span")).getText());
+		  
 		  driver.findElement(By.name("quantity")).clear();
-		  driver.findElement(By.name("quantity")).sendKeys("2");
-		  driver.findElement(By.name("addproduct")).click();
+		  mainPage.insertText("quantity", "2");
+		  //driver.findElement(By.name("quantity")).sendKeys("2");
+		  mainPage.click(By.name("addproduct"));
+		  //driver.findElement(By.name("addproduct")).click();
 		  
 		  Thread.sleep(2000);
 		  String totalPrice = driver.findElement(By.xpath("//span[@id='basketSummaryTotal']")).getText();
