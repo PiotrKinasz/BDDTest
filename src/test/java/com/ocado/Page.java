@@ -1,11 +1,14 @@
 package com.ocado;
 
 import static org.fest.assertions.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.internal.FindsByName;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
@@ -44,8 +47,13 @@ public abstract class Page {
 		assertThat(driver.getPageSource()).contains(expected);
 	}
 
-	protected void insertText(String elementId, String name) {
+	public void insertText(String elementId, String name) {
 		WebElement element = findById(elementId);
+		element.sendKeys(name);
+	}
+	
+	public void insertTextByName(String elementName, String name) {
+		WebElement element = findByName(elementName);
 		element.sendKeys(name);
 	}
 
@@ -64,6 +72,11 @@ public abstract class Page {
 		WebElement element = driver.findElement(by);
 		element.click();
 	}
+	
+	public String getTextByXPath(String elementXPath) {
+		WebElement element = findByXPath(elementXPath);
+		return element.getText();
+	}
 
 	protected void clickAndSubmit(String elementId) {
 		WebElement element = findById(elementId);
@@ -73,6 +86,18 @@ public abstract class Page {
 
 	protected WebElement findById(String elementId) {
 		return driver.findElement(By.id(elementId));
+	}
+	
+	protected WebElement findByName(String elementName) {
+		return driver.findElement(By.name(elementName));
+	}
+	
+	protected WebElement findByXPath(String elementXPath) {
+		return driver.findElement(By.xpath(elementXPath));
+	}
+	
+	public void assertText(By identifier, String expected) {
+		assertEquals(driver.findElement(identifier).getText(), expected);
 	}
 	
 	public boolean isElementPresent(By by) {

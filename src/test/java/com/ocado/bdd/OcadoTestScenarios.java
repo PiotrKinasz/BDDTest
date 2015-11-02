@@ -1,6 +1,8 @@
 package com.ocado.bdd;
 
 import java.util.concurrent.TimeUnit;
+import org.junit.Assert;
+import static org.fest.assertions.Assertions.assertThat;
 
 import org.eclipse.jetty.websocket.api.SuspendToken;
 import org.openqa.selenium.By;
@@ -51,23 +53,26 @@ public class OcadoTestScenarios {
 		  System.out.println(driver.findElement(By.xpath("//a[@class='button secondary']/span")).getText());
 		  
 		  driver.findElement(By.name("quantity")).clear();
-		  mainPage.insertText("quantity", "2");
-		  //driver.findElement(By.name("quantity")).sendKeys("2");
+		  mainPage.insertTextByName("quantity", "2");
 		  mainPage.click(By.name("addproduct"));
-		  //driver.findElement(By.name("addproduct")).click();
 		  
 		  Thread.sleep(2000);
-		  String totalPrice = driver.findElement(By.xpath("//span[@id='basketSummaryTotal']")).getText();
-		  double totalPriceDouble = Double.parseDouble(totalPrice.substring(1));
+		  String basketTotalPrice = mainPage.getTextByXPath("//span[@id='basketSummaryTotal']");
+		  System.out.println(basketTotalPrice);
+		  double basketTotalPriceDouble = Double.parseDouble(basketTotalPrice.substring(1));
 		 
-		  String basketSummaryCount = driver.findElement(By.xpath("//span[@id='basketSummaryCount']")).getText();
+		  String basketSummaryCount = mainPage.getTextByXPath("//span[@id='basketSummaryCount']");
+		  System.out.println(basketSummaryCount);
 		  int basketSummary = Integer.parseInt(basketSummaryCount);
-		   
-		  String typicalPrice = driver.findElement(By.xpath("//div[@class='typicalPrice']")).getText();
+		  mainPage.assertText(By.xpath("//span[@id='basketSummaryCount']"), "2");
+		  
+		  String typicalPrice = mainPage.getTextByXPath("//div[@class='typicalPrice']");
+		  System.out.println(typicalPrice);
 		  double typicalPriceDouble = Double.parseDouble(typicalPrice.substring(1));
 		   
-		  totalPriceDouble=typicalPriceDouble/basketSummary;
-	
+		  //basketTotalPrice=typicalPriceDouble/basketSummary;
+		  //Assert.assertEquals(totalPriceDouble, totalPriceDouble);
+		  //assertThat("actual").isEqualTo(basketSummaryCount);
 	  }
 	  
 	  //Scenario 2

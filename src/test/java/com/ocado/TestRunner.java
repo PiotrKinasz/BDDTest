@@ -10,6 +10,7 @@ import cucumber.api.junit.Cucumber;
 		features = "Stories"
 		,glue = {"com.ocado.bdd"}
 		,format={"pretty","html:reports/test-report"}
+		,monochrome=true
 		)
 public class TestRunner {
 
