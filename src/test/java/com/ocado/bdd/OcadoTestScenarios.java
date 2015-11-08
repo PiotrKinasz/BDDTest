@@ -84,6 +84,10 @@ public class OcadoTestScenarios {
 			Thread.sleep(2000);
 			MainPage mainPage = loginPage.logIn("ocadobddtest@mailinator.com", "Ocado123");
 			Thread.sleep(2000);
+			mainPage.click(By.linkText("View trolley"));
+			mainPage.click(By.linkText("Empty your trolley"));
+			Thread.sleep(2000);
+			mainPage.click("empty-trolley-popup-btn");
 	  }
 		 
 	  @When("^Offers page is displayed$")
@@ -98,11 +102,15 @@ public class OcadoTestScenarios {
 	  @Then("^add items met promo conditions to trolley$")
 	  public void addItemToTrolley() throws Throwable{
 		  //To finish
-		  Thread.sleep(2000);
-		  driver.findElement(By.xpath("//input[@class='productAdd']")).click();
-		  driver.findElement(By.linkText("View trolley")).click();
+		  MainPage mainPage = new MainPage(driver);
+		  mainPage.click(By.xpath("//input[@class='productAdd']"));
+		  mainPage.click(By.linkText("View trolley"));
+		  Thread.sleep(1000);	
+		  mainPage.iterateOverElements("//div[@id='centralColumn']/ul/li");
 		  Thread.sleep(1000);	  
-		  driver.findElement(By.xpath("//li[@id='item*']")).click();
+		  mainPage.click(By.className("trolleyInfo"));
+		  Thread.sleep(1000);
+		  System.out.println(mainPage.getTextByXPath("//div[@id='hoverTip']/p/a[1]"));
 	  }
 	  
 	  

@@ -3,6 +3,8 @@ package com.ocado;
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -108,6 +110,15 @@ public abstract class Page {
 			return false;
 		}
 	}
+	
+	public void iterateOverElements(String xpath) {
+			
+		List<WebElement> menu = driver.findElements(By.xpath(xpath));
 
+		for (int i = 1; i <= menu.toArray().length; i++) {
+			click(By.xpath(xpath + "[" + i + "]"));
+			
+		}
+	}
 	
 }
